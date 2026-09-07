@@ -1,0 +1,161 @@
+generated: '2026-09-07'
+method: probed
+source: direct HTTP probe of every ADDX host known to this record
+name: ADDX well-known documents
+summary: >-
+  ADDX serves no /.well-known/ documents on any host. Five named paths were probed on seven hosts. The
+  marketing site returns a real 404 for each; the S3/CloudFront-backed hosts return an S3 NoSuchKey 404; the
+  API host returns an empty 302; and the client single-page app answers 200 with its own HTML shell for
+  every path, which is a miss, not a document. No WellKnown or SecurityTxt pointer is emitted, because
+  nothing was served.
+hosts:
+- host: addx.co
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+- host: www.addx.co
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+- host: api-docs.addx.co
+  note: documentation host for the ADDX Open API; S3 origin returns NoSuchKey for every miss
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+- host: client.addx.co
+  note: >-
+    Single-page application. Answers HTTP 200 with the same 10,011-byte HTML shell for every /.well-known/
+    path, including agent-card.json and llms.txt. Every entry below is a soft-404 and is recorded as a miss.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: null
+    served: false
+    body: HTML SPA shell, not a document
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: null
+    served: false
+    body: HTML SPA shell, not a document
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: null
+    served: false
+    body: HTML SPA shell, not a document
+  - path: /.well-known/api-catalog
+    status: 200
+    file: null
+    served: false
+    body: HTML SPA shell, not a document
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    file: null
+    served: false
+    body: HTML SPA shell, not a document
+- host: digital-api.addx.co
+  note: candidate API host named in the client bundle; CloudFront returns an empty 302 with no Location for every path
+  documents:
+  - path: /.well-known/security.txt
+    status: 302
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 302
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 302
+    file: null
+  - path: /.well-known/api-catalog
+    status: 302
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 302
+    file: null
+- host: documents.addx.co
+  note: S3-backed document host serving the ADDX rulebooks and the ISO/IEC 27001 certificate
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+- host: support.addx.co
+  note: >-
+    Zendesk help centre CNAME. Unreachable — TLS handshake fails (SSLV3_ALERT_HANDSHAKE_FAILURE) from two
+    independent clients, so no path could be probed. The underlying addx.zendesk.com answers 200 with
+    "Help Center Closed".
+  documents: []
+agent_card:
+  probed: true
+  found: false
+  paths:
+  - url: https://addx.co/.well-known/agent-card.json
+    status: 404
+  - url: https://addx.co/.well-known/agent.json
+    status: 404
+  - url: https://api-docs.addx.co/.well-known/agent-card.json
+    status: 404
+  - url: https://api-docs.addx.co/.well-known/agent.json
+    status: 404
+  - url: https://client.addx.co/.well-known/agent-card.json
+    status: 200
+    served: false
+    note: SPA HTML shell, rejected
+  - url: https://client.addx.co/.well-known/agent.json
+    status: 200
+    served: false
+    note: SPA HTML shell, rejected
+  - url: https://digital-api.addx.co/.well-known/agent-card.json
+    status: 302
+  - url: https://digital-api.addx.co/.well-known/agent.json
+    status: 302
+  note: >-
+    No A2A agent card exists. Per pipeline contract no a2a/ artifact and no AgentCard pointer is written.

@@ -1,0 +1,176 @@
+generated: '2026-09-07'
+method: searched
+source: https://api-docs.addx.co/open-api/
+name: ADDX Open API conventions
+api: ADDX Open API
+docs: https://api-docs.addx.co/open-api/
+summary: >-
+  Cross-cutting runtime semantics read directly from the ADDX Open API reference. The API is JSON-in /
+  JSON-out, HMAC-signed per request, path-versioned (client/v1 and trading/api/v2), pages with page + limit
+  and returns a pagination object, and reports failures in a flat {message, code, success} envelope rather
+  than RFC 9457. It publishes no idempotency mechanism and no rate-limit headers.
+auth_style:
+  style: request signature (HMAC-SHA256)
+  headers: [X-Signature, X-UserId, X-TimeStamp]
+  see: authentication/addx-authentication.yml
+base_url:
+  published: false
+  note: >-
+    "Base URL is dependent on the environment. Please get in touch with the concerned person to get the
+    applicable Base URL for the use case." Every documented path is written as <BaseURL>/... — the host is
+    issued per partner and per environment and is not published, so no anonymous caller can reach the API.
+content:
+  request: >-
+    "When making requests, arguments can be passed as params, form data or JSON with correct Content-Type
+    header." Several read operations are documented as POST with a JSON body rather than GET with query
+    parameters (e.g. balance-info, portfolio-detail, stos, wallet/*).
+  response: All requests return a valid JSON object or an array of JSON objects.
+idempotency:
+  supported: false
+  coverage: none
+  mechanism: none
+  header: null
+  scope: null
+  retention: null
+  evidence: >-
+    The reference documents no Idempotency-Key header, no client-supplied request identifier, and no replay
+    window anywhere across the 68 documented operations, including the money-moving confirm-investment,
+    confirm-redemption, fiat-withdraw-confirm and digital-assets/withdraw-confirm calls. Those writes are
+    guarded by a two-step info -> confirm pattern and, for withdrawals, by an OTP, but neither is replay
+    protection: re-sending a confirm call with the same body is not documented as being deduplicated.
+  note: >-
+    Recorded as none because nothing in the published contract lets an agent retry a failed write safely.
+    An OTP-gated confirm narrows the blast radius for withdrawals; it does not cover subscription or
+    redemption confirms.
+reversibility:
+  grade: none
+  applicable: true
+  summary: >-
+    The API has a substantial write surface — investment subscription, subsequent subscription, redemption,
+    bank-account create/update/delete, fiat deposit and withdrawal, digital-asset withdrawal — and the
+    published reference documents no cancel, void, reverse, undo or restore operation for any of it, and no
+    window inside which a submitted instruction can be withdrawn.
+  write_surfaces:
+  - surface: STO subscription (self and EAM)
+    operations: [Confirm Investment, Confirm Subsequent Investment, Confirm Investment - EAM, Confirm Subsequent Subscription - EAM]
+    reversal_operation: null
+    window: null
+    note: >-
+      Documented as terminal: "Success message if request is accepted". Errors are only pre-conditions
+      (amount below minimum, STO closed or complete, insufficient balance). No cancellation path is published.
+  - surface: STO redemption (self and EAM)
+    operations: [Confirm Subsequent Redemption Request, Confirm Subsequent Redemption - EAM]
+    reversal_operation: null
+    window: null
+    note: >-
+      Response is a submission acknowledgement ("Your redemption of estimated ... has been successfully
+      submitted"); no withdraw-the-request operation is documented.
+  - surface: Fiat withdrawal
+    operations: [Withdraw Info, Withdraw OTP request, Confirm Withdraw request]
+    reversal_operation: null
+    window: null
+    note: >-
+      Guarded by a mobile OTP before confirmation. That is a pre-commit control, not a reversal.
+  - surface: Digital-asset withdrawal
+    operations: [Get applicable withdrawal fee, Generate email OTP, Generate mobile OTP, Request identity verification, Confirm withdraw request]
+    reversal_operation: null
+    window: null
+    note: >-
+      Strongest pre-commit gate on the API — fee quote, email OTP, mobile OTP and an identity-verification
+      step precede the confirm. On-chain withdrawal is irreversible by construction and the docs say nothing
+      about recall.
+  - surface: Bank accounts
+    operations: [Add Bank account, Edit Bank account, Delete Bank accounts]
+    reversal_operation: null
+    window: null
+    note: >-
+      Delete is documented as a POST to /client/v1/bank/delete with no restore or soft-delete window.
+  caveat: >-
+    Absence in the public reference is not proof ADDX cannot reverse an instruction operationally — a
+    licensed exchange has back-office processes. It is proof that no reversal is available to a caller of
+    this API, which is what an agent needs to know before acting.
+dry_run_mode:
+  supported: false
+  note: >-
+    No dry-run, preview or simulate flag is documented. The closest published equivalent is the two-step
+    pattern: an "-info" and a "-fee" call quote the outcome before a separate "confirm-" call commits it
+    (e.g. sto/subscription/investment-info -> sto/subscription/investment-fee ->
+    sto/subscription/confirm-investment). That is a quote, not a dry run of the write.
+pagination:
+  style: page-number
+  request_params:
+  - name: page
+    in: body
+  - name: limit
+    in: body
+    max: 50
+    note: documented as "limit ( max 50 per page )" on Historical Transactions
+  response_field: pagination
+  response_shape:
+    page: integer
+    pageCount: integer
+    nextPage: integer
+    currentPage: integer
+    __typename: PaginationType
+  note: >-
+    The __typename PaginationType field in the documented JSON is a GraphQL artefact leaking through a REST
+    envelope, which suggests the REST surface is a facade over an internal GraphQL layer. No public GraphQL
+    endpoint was found (see mcp/addx-mcp.yml surfaces).
+  applies_to:
+  - Historical Transactions
+  - Pending Transactions
+  - Transaction Details
+filtering:
+  note: >-
+    Filter vocabularies are themselves API calls — /client/v1/wallet/filter-setting and
+    /client/v1/portfolio/filter-setting return the allowed filter values (currency codes, token codes,
+    transaction types, activity types) that the corresponding list calls accept.
+  common_filters: [currencyCode, tokenCode, timeFrom, timeTo, transactionType, statusFilter]
+  time_format: epoch seconds
+field_expansion:
+  supported: partial
+  note: >-
+    Not a general sparse-fieldset mechanism. Individual operations take boolean switches that widen the
+    response, e.g. portfolio-detail takes includeOngoingSto, balance-info takes tokensWithTransactionOnly.
+metadata:
+  custom_metadata_supported: false
+request_id_tracing:
+  supported: false
+  note: No correlation-id or request-id header is documented on requests or responses.
+versioning:
+  style: path
+  versions:
+  - v1 — /client/v1/... and /openapi/client/v1/... (platform surface)
+  - v2 — /openapi/trading/api/v2/... (exchange/trading surface)
+  note: >-
+    Two independently versioned surfaces share one signed-request contract. The docs also show two path
+    prefixes for the platform surface (/openapi/client/v1/... and /client/v1/...) without explaining the
+    difference; the older account/STO group uses the /openapi prefix and the wallet, portfolio, reporting,
+    bank and digital-asset groups do not.
+  see: lifecycle/addx-lifecycle.yml
+error_envelope:
+  format: custom
+  rfc9457: false
+  media_type: application/json
+  shape:
+    message: human-readable error string
+    code: numeric HTTP-like code carried inside the body
+    success: boolean, false on failure
+    extra: optional array of per-item failures, each {sid, error}, on batch EAM calls
+  see: errors/addx-problem-types.yml
+rate_limit_signaling:
+  headers_published: false
+  status_on_exhaustion: not documented
+  see: rate-limits/addx-rate-limits.yml
+webhooks:
+  supported: not documented
+  note: >-
+    No callback, webhook or event-subscription surface appears anywhere in the reference. Every documented
+    interaction is client-initiated polling, including for asynchronous outcomes such as a submitted
+    redemption or a pending transaction.
+cross_links:
+  authentication: authentication/addx-authentication.yml
+  errors: errors/addx-problem-types.yml
+  lifecycle: lifecycle/addx-lifecycle.yml
+  rate_limits: rate-limits/addx-rate-limits.yml
+  data_model: data-model/addx-data-model.yml

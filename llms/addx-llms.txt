@@ -1,0 +1,108 @@
+# ADDX
+
+> ADDX is a Singapore-headquartered digital securities exchange and private-markets investment platform,
+> licensed by the Monetary Authority of Singapore as a Capital Markets Services licensee (dealing in capital
+> markets products and custodial services) and as a Recognised Market Operator. Founded in November 2017 as
+> iSTOX and operated by ADDX Pte. Ltd. (UEN 202125312H), it tokenises private equity, private credit, hedge
+> funds, structured products, fixed income and commercial paper so accredited investors can subscribe from
+> roughly USD 10,000. ADDX Advantage extends the same rails to wealth managers, brokers and external asset
+> managers (EAMs), who may access the platform through the web portal or through the ADDX Open API.
+
+generated: 2026-09-07
+method: generated
+source: https://api-docs.addx.co/open-api/ and https://addx.co/ — assembled by API Evangelist from ADDX's
+own public pages. ADDX serves no llms.txt of its own (https://addx.co/llms.txt returns 404).
+
+## What an agent can and cannot do here
+
+- The ADDX Open API is documented publicly, but it is NOT callable anonymously and NOT callable by an agent
+  that has not been onboarded. The reference states: "Base URL is dependent on the environment. Please get
+  in touch with the concerned person to get the applicable Base URL for the use case." No base host is
+  published, so the documented paths cannot be resolved without a partner relationship.
+- Credentials are a Key ID plus a secret passphrase generated from API-Settings inside the authenticated
+  ADDX product. There is no OAuth flow, no client registration and no self-serve API key.
+- There is no MCP server, no A2A agent card, no webhook or event surface, no SDK in any language, and no
+  OpenAPI document. See the gaps section.
+
+## API
+
+- [ADDX Open API reference](https://api-docs.addx.co/open-api/): "Open Api Library" — the complete public
+  reference. About 68 operations in five groups: Account Management, Market Data, Reporting, Fiat Flow and
+  Digital Assets. Two path-versioned surfaces: /client/v1/ and /openapi/client/v1/ for the platform,
+  /openapi/trading/api/v2/ for the exchange.
+
+### Authentication
+Every request carries three headers: X-Signature (HMAC-SHA256 over the UTC epoch timestamp concatenated
+with the HTTP method, Base64 encoded, keyed by the secret passphrase), X-UserId (the Key ID) and
+X-TimeStamp. A user may need more than one key/secret pair depending on which requests they make.
+
+### Operation groups
+- Account Management — account info, balances, EAM investor list, investor portfolio/transaction/wallet
+  detail; STO subscription, subsequent subscription and redemption flows for both self-directed and
+  EAM-managed investors; STO listing and product details; wallet and portfolio filters and holdings.
+- Market Data — aggregated order book, market depth, market state, token list, ticker feed, trade feed and
+  trading-account balances on the exchange.
+- Reporting — available report types, report listing, report download.
+- Fiat Flow — bank account list/add/edit/delete, document upload, fiat deposit, withdrawal info, mobile OTP
+  request and withdrawal confirmation, plus wealth-manager distribute and collect.
+- Digital Assets — digital balances, deposit address, withdrawal fee, email and mobile OTP, identity
+  verification, withdrawal confirmation.
+
+### Runtime semantics an agent needs
+- Errors: flat JSON {message, code, success} with an optional extra[] of per-investor {sid, error} on batch
+  EAM calls. Not RFC 9457. Only 400 and 404 are documented; 404 doubles as "this key may not reach this
+  account".
+- Pagination: page + limit (max 50) in the request body, pagination {page, pageCount, nextPage,
+  currentPage} in the response.
+- Idempotency: none. No Idempotency-Key and no replay window, including on the money-moving confirm calls.
+- Reversibility: none published. No cancel, void or reverse operation exists for any write — subscription,
+  redemption, bank-account delete, fiat withdrawal or digital-asset withdrawal. Withdrawals are gated by
+  OTP and identity verification before commit, which is a pre-commit control, not a reversal.
+- Rate limits: not published. No 429 and no rate-limit headers are documented.
+- Dry run: none. The published substitute is a two-step quote — an "-info" call and a "-fee" call before a
+  separate "confirm-" call commits.
+
+## Company
+
+- [ADDX](https://addx.co/): company site.
+- [How ADDX works](https://addx.co/en/how-addx-works/)
+- [Get started](https://addx.co/en/get-started/)
+- [ADDX Advantage for wealth managers](https://addx.co/en/advantage/get-started/): the offering that the
+  Open API belongs to — "Choose between accessing directly through web portal, or API integration with your
+  existing system."
+- [Investments](https://addx.co/en/investments/): private equity, private credit, hedge funds, structured
+  products, fixed income, commercial paper.
+- [Insights](https://addx.co/en/insights/): blog and education.
+- [FAQ](https://addx.co/en/faq/)
+- [Contact](https://addx.co/en/contact-us/)
+- [Register](https://client.addx.co/register) / [Sign in](https://client.addx.co/login)
+
+## Legal, rules and compliance
+
+- [Privacy Policy](https://addx.co/en/privacy-policy/)
+- [ADDX Platform Rules](https://documents.addx.co/ADDX_Platform_Rules.pdf)
+- [ADDX Exchange Rules](https://documents.addx.co/ADDX_Exchange_Rules.pdf)
+- [ADDX Listing Rules](https://documents.addx.co/ADDX_Listing_Rules.pdf)
+- [ADDX OTC Rules](https://documents.addx.co/ADDX_OTC_Rules.pdf)
+- [ADDX Best Execution Policy](https://documents.addx.co/ADDX-Best-Execution-Policy.pdf)
+- [ISO/IEC 27001:2013 certificate](https://documents.addx.co/ADDX_ISO_IEC_27001_2013.pdf): certified
+  January 2022.
+
+## Pricing
+
+No plans or tiers are published, and API access is not priced separately. Per the ADDX FAQ there are no
+signup or account-opening fees; an ADDX fee applies when investing in primary offerings and when trading on
+the exchange, chargeable to both buyer and seller subject to a minimum of SGD 0.01 per trade depending on
+asset class. Rates are not published.
+
+## Gaps (measured 2026-09-07, not asserted by ADDX)
+
+- No OpenAPI or Swagger document at any ADDX host.
+- No base URL published — the API cannot be reached without an ADDX-issued host.
+- No MCP server and no A2A agent card (/.well-known/agent-card.json and /.well-known/agent.json 404).
+- No /.well-known/ document of any kind on any ADDX host, including security.txt.
+- No SDK, no CLI, no Postman collection, no GitHub organisation.
+- No status page, no changelog, no versioning or deprecation policy, no SLA.
+- No webhooks — all asynchronous outcomes must be polled.
+- The support help centre (support.addx.co) fails TLS handshake and addx.zendesk.com answers "Help Center
+  Closed"; use https://addx.co/en/contact-us/ instead.

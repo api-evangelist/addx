@@ -1,23 +1,129 @@
 aid: addx
 name: ADDX
-description: 'ADDX is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  ADDX is a Singapore-headquartered digital securities exchange and private-markets investment platform,
+  licensed by the Monetary Authority of Singapore for the issuance, custody and secondary trading of digital
+  securities. Founded in 2017 as iSTOX, it tokenises and fractionalises private equity, private credit, hedge
+  funds, structured products, fixed income and commercial paper so accredited investors can subscribe at
+  roughly USD 10,000 rather than institutional minimums. Alongside the consumer web and mobile app, ADDX
+  Advantage packages the same rails for wealth managers, brokers and external asset managers (EAMs), and the
+  publicly documented ADDX Open API — an HMAC-signed REST surface of about 68 operations covering account and
+  investor information, STO subscription and redemption, wallet, fiat and digital-asset flows, exchange
+  order-book market data and investor reporting — lets those partners drive the platform from their own systems.
+image: https://www.addx.co/images/Social_Share_Hero_image2.png
 url: https://raw.githubusercontent.com/api-evangelist/addx/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-09-07'
 modified: '2026-09-07'
 tags:
-- Company
-apis: []
+- Digital Securities Exchange
+- Private Markets
+- Tokenization
+- Alternative Investments
+- Wealth Management
+- Capital Markets
+- Fintech
+- Digital Assets
+- Investment Platform
+- Singapore
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- name: ADDX Open API
+  description: >-
+    Publicly documented REST API that connects an external system to the ADDX platform. Roughly 68 operations
+    across five documented groups — Account Management (account, balance, EAM investor, portfolio, transaction
+    and wallet detail, plus STO subscription, subsequent-subscription and redemption flows for both self and
+    EAM-managed investors), Market Data (aggregated order book, market depth, market state, token list, ticker
+    feed, trade feed, account balances on the trading engine), Reporting (report types, report listing,
+    downloads), Fiat Flow (bank-account management, document upload, fiat deposit and withdrawal with OTP
+    confirmation, wealth-manager distribute/collect) and Digital Assets (balances, deposit addresses, withdrawal
+    fees, email and mobile OTP, identity verification, withdrawal confirmation). Requests are signed with an
+    HMAC-SHA256 X-Signature over the timestamp and HTTP method using a Key ID and secret passphrase the user
+    generates in the platform's API Settings. The base URL is deliberately not published — ADDX issues it per
+    environment and per use case on request — so the documented paths are relative to a host only a provisioned
+    partner holds.
+  humanURL: https://api-docs.addx.co/open-api/
+  image: https://www.addx.co/images/Social_Share_Hero_image2.png
+  tags:
+  - Digital Securities Exchange
+  - Private Markets
+  - Wealth Management
+  - Digital Assets
+  - Capital Markets
+  properties:
+  - type: APIReference
+    url: https://api-docs.addx.co/open-api/
+  - type: Authentication
+    url: authentication/addx-authentication.yml
+  - type: Conventions
+    url: conventions/addx-conventions.yml
+  - type: ErrorCatalog
+    url: errors/addx-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/addx-lifecycle.yml
+  - type: RateLimits
+    url: rate-limits/addx-rate-limits.yml
+  - type: DataModel
+    url: data-model/addx-data-model.yml
+  - type: X-MCPServerCandidate
+    url: mcp/addx-mcp.yml
 common:
+- type: DomainSecurity
+  url: security/addx-domain-security.yml
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://addx.co/
+- type: DeveloperPortal
+  url: https://api-docs.addx.co/open-api/
+- type: APIReference
+  url: https://api-docs.addx.co/open-api/
+- type: Documentation
+  url: https://addx.co/en/how-addx-works/
+- type: GettingStarted
+  url: https://addx.co/en/get-started/
+- type: SignUp
+  url: https://client.addx.co/register
+- type: Login
+  url: https://client.addx.co/login
+- type: Support
+  url: https://addx.co/en/contact-us/
+- type: Blog
+  url: https://addx.co/en/insights/
+- type: TermsOfService
+  url: https://documents.addx.co/ADDX_Platform_Rules.pdf
+- type: PrivacyPolicy
+  url: https://addx.co/en/privacy-policy/
+- type: Conformance
+  url: conformance/addx-conformance.yml
+- type: Compliance
+  url: conformance/addx-conformance.yml
+- type: Authentication
+  url: authentication/addx-authentication.yml
+- type: Conventions
+  url: conventions/addx-conventions.yml
+- type: ErrorCatalog
+  url: errors/addx-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/addx-lifecycle.yml
+- type: RateLimits
+  url: rate-limits/addx-rate-limits.yml
+- type: Plans
+  url: plans/addx-plans-pricing.yml
+- type: Packages
+  url: packages/addx-packages.yml
+- type: DataModel
+  url: data-model/addx-data-model.yml
+- type: LLMsTxt
+  url: llms/addx-llms.txt
+- type: X-MCPServerCandidate
+  url: mcp/addx-mcp.yml
+x-enrichment:
+  date: '2026-09-07'
+  status: enriched
+  artifacts_added: 13
+  pass: local-v3

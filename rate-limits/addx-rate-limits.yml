@@ -1,0 +1,34 @@
+generated: '2026-09-07'
+method: searched
+source: https://api-docs.addx.co/open-api/
+name: ADDX Open API rate limits
+api: ADDX Open API
+docs: https://api-docs.addx.co/open-api/
+limit_count: 0
+limits: []
+headers_published: false
+response_headers: []
+status_on_exhaustion: null
+retry_after: not documented
+note: >-
+  The ADDX Open API reference publishes no rate limits, no quotas and no throttling headers. Its Status Code
+  table lists only 400 and 404; 429 is never mentioned, and no X-RateLimit-*, RateLimit-* or Retry-After
+  header appears anywhere in the document. The only numeric ceiling published anywhere in the reference is a
+  pagination bound, not a rate limit — Historical Transactions documents "limit ( max 50 per page )".
+  Recorded as an honest zero: limits may well be enforced at the edge, but nothing tells a caller what they
+  are or how to detect exhaustion. Live observation was not possible because ADDX does not publish the base
+  URL (it is issued per partner and environment on request), so no unauthenticated response could be probed.
+pagination_bound:
+  operation: Historical Transactions
+  param: limit
+  max: 50
+  note: page-size ceiling, recorded here only so it is not mistaken for a rate limit
+probes:
+- url: https://api-docs.addx.co/open-api/
+  status: 200
+  finding: full reference read; no rate-limit section, table or header mentioned
+- url: https://digital-api.addx.co/openapi/trading/api/v2/public/markets
+  status: 302
+  finding: >-
+    CloudFront returns a 302 with no Location and an empty body for every path on the candidate API host,
+    so no live response headers could be observed.

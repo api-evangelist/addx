@@ -1,0 +1,57 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  registry.npmjs.org, pypi.org, rubygems.org, crates.io, api.github.com, and
+  https://api-docs.addx.co/open-api/
+name: ADDX client packages
+package_count: 0
+official_package_count: 0
+packages: []
+summary: >-
+  No first-party ADDX client library exists in any public package registry, and the ADDX Open API reference
+  ships no SDK — its only client-side sample is an inline Postman pre-request script that builds the
+  HMAC-SHA256 X-Signature with CryptoJS. Partners are expected to sign requests themselves.
+registries_searched:
+- registry: npm
+  query: addx
+  url: https://registry.npmjs.org/-/v1/search?text=addx&size=20
+  status: 200
+  first_party_hits: 0
+  note: >-
+    Only unrelated packages match (an AI tooling manager at @mulham28/addx, plus fuzzy matches). None is
+    published by ADDX Pte. Ltd. or references addx.co.
+- registry: PyPI
+  query: addx
+  url: https://pypi.org/pypi/addx/json
+  status: 404
+  first_party_hits: 0
+- registry: GitHub
+  query: org:addx and orgs/addx
+  url: https://api.github.com/orgs/addx
+  status: 404
+  first_party_hits: 0
+  note: >-
+    No ADDX GitHub organisation exists. The github.com/addx account is an unrelated personal user with no
+    company, blog or bio linking it to ADDX Pte. Ltd., so it is not recorded as first-party.
+- registry: RubyGems / crates.io / Maven Central / NuGet / pkg.go.dev
+  first_party_hits: 0
+  note: not searched individually — no SDK of any language is referenced anywhere on the ADDX developer surface
+mobile_apps:
+- name: ADDX — Entry to Private Markets
+  platform: iOS
+  url: https://apps.apple.com/us/app/addx-entry-to-private-markets/id1565314912
+  version: null
+  published: null
+  official: true
+  note: >-
+    End-user application, not a developer package. Recorded for completeness; it does not count as an SDK.
+- name: ADDX
+  platform: Android
+  url: https://play.google.com/store/apps/details?id=com.addx.investments
+  version: null
+  published: null
+  official: true
+  note: End-user application, not a developer package.
+gaps:
+- No SDK in any language, so every partner reimplements the HMAC signing scheme from the documentation.
+- No Postman collection is published — only a pasted pre-request script fragment inside the docs page.

@@ -1,0 +1,514 @@
+generated: '2026-09-07'
+method: derived
+source: https://api-docs.addx.co/open-api/
+name: ADDX MCP server
+status: candidate
+summary: 'No ADDX Model Context Protocol server exists. ADDX publishes no MCP endpoint, no stdio package
+  and no mention of MCP anywhere on its developer or marketing surface, and no npm/PyPI package is published
+  under its name. The tool list below is a CANDIDATE derived from the 68 operations documented in the
+  ADDX Open API reference, so that the shape of a future server is recorded; it is not an agent surface
+  and nothing here can be called today. Input schemas are left null deliberately: the reference documents
+  request bodies as prose and JSON examples rather than as a schema, and ADDX does not publish an OpenAPI
+  document to derive parameters from, so inventing them would be fabrication.'
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: derived
+  note: 'mode: none — no server is shipped by the provider. auth records what a server would need: the
+    ADDX HMAC scheme uses a Key ID plus a secret passphrase generated in the platform API-Settings panel,
+    which is closest to api-key. There is no OAuth surface.'
+surfaces:
+  openapi: null
+  openapi_note: No OpenAPI/Swagger document published; the contract is a static HTML reference.
+  graphql: null
+  graphql_note: 'No public GraphQL endpoint. https://addx.co/graphql returns 404 and https://client.addx.co/graphql
+    returns the SPA HTML shell. A __typename: PaginationType field leaking into the documented REST pagination
+    object suggests an internal GraphQL layer behind the REST facade, but nothing public was found.'
+  mcp: null
+  rest_reference: https://api-docs.addx.co/open-api/
+  base_url_published: false
+tool_count: 68
+tools:
+- name: addx_account_info
+  title: Account Info
+  category: Account Management
+  rest:
+    method: GET
+    path: /openapi/client/v1/account-info
+  input_schema: null
+- name: addx_balance_info
+  title: Balance Info
+  category: Account Management
+  rest:
+    method: POST
+    path: /openapi/client/v1/balance-info
+  input_schema: null
+- name: addx_investor_details
+  title: Investor Details
+  category: Account Management
+  rest:
+    method: POST
+    path: /openapi/client/v1/eam/investors-info
+  input_schema: null
+- name: addx_portfolio_details
+  title: Portfolio Details
+  category: Account Management
+  rest:
+    method: POST
+    path: /openapi/client/v1/eam/investor/portfolio-detail
+  input_schema: null
+- name: addx_transaction_details
+  title: Transaction Details
+  category: Account Management
+  rest:
+    method: POST
+    path: /openapi/client/v1/eam/investor/transaction-detail
+  input_schema: null
+- name: addx_wallet_details
+  title: Wallet Details
+  category: Account Management
+  rest:
+    method: POST
+    path: /openapi/client/v1/eam/investor/wallet-detail
+  input_schema: null
+- name: addx_investment_info
+  title: Investment Info
+  category: Account Management
+  rest:
+    method: GET
+    path: /openapi/client/v1/sto/subscription/investment-info
+  input_schema: null
+- name: addx_investment_fee
+  title: Investment Fee
+  category: Account Management
+  rest:
+    method: GET
+    path: /openapi/client/v1/sto/fee
+  input_schema: null
+- name: addx_confirm_investment
+  title: Confirm Investment
+  category: Account Management
+  rest:
+    method: POST
+    path: /openapi/client/v1/sto/confirm-investment
+  input_schema: null
+- name: addx_subsequent_investment_info
+  title: Subsequent Investment Info
+  category: Account Management
+  rest:
+    method: GET
+    path: /openapi/client/v1/sto/subscription/investment-info
+  input_schema: null
+- name: addx_subsequent_subscription_investment_fee
+  title: Subsequent Subscription Investment Fee
+  category: Account Management
+  rest:
+    method: GET
+    path: /openapi/client/v1/sto/subscription/investment-fee
+  input_schema: null
+- name: addx_confirm_subsequent_investment
+  title: Confirm Subsequent Investment
+  category: Account Management
+  rest:
+    method: POST
+    path: /openapi/client/v1/sto/subscription/confirm-investment
+  input_schema: null
+- name: addx_subsequent_token_info_for_redemption
+  title: Subsequent Token Info For Redemption
+  category: Account Management
+  rest:
+    method: GET
+    path: /openapi/client/v1/sto/redemption/tokens-info
+  input_schema: null
+- name: addx_subsequent_redemption_info
+  title: Subsequent Redemption Info
+  category: Account Management
+  rest:
+    method: GET
+    path: /openapi/client/v1/sto/redemption/redemption-info
+  input_schema: null
+- name: addx_get_subsequent_redemption_fee
+  title: Get Subsequent Redemption Fee
+  category: Account Management
+  rest:
+    method: GET
+    path: /openapi/client/v1/sto/redemption/redemption-fee
+  input_schema: null
+- name: addx_confirm_subsequent_redemption_request
+  title: Confirm Subsequent Redemption Request
+  category: Account Management
+  rest:
+    method: POST
+    path: /openapi/client/v1/sto/redemption/confirm-redemption
+  input_schema: null
+- name: addx_investment_info_eam
+  title: Investment Info - EAM
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/sto/eam/investment-info
+  input_schema: null
+- name: addx_get_investment_fee_eam
+  title: Get Investment Fee - EAM
+  category: Account Management
+  rest:
+    method: GET
+    path: /client/v1/sto/eam/fee
+  input_schema: null
+- name: addx_confirm_investment_eam
+  title: Confirm Investment - EAM
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/sto/eam/confirm-investment
+  input_schema: null
+- name: addx_subsequent_subscription_sto_info_eam
+  title: Subsequent Subscription STO Info  - EAM
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/sto/eam/subscription/investment-info
+  input_schema: null
+- name: addx_subsequent_subscription_sto_fee_eam
+  title: Subsequent Subscription STO Fee - EAM
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/sto/eam/subscription/investment-fee
+  input_schema: null
+- name: addx_confirm_subsequent_subscription_eam
+  title: Confirm Subsequent Subscription  - EAM
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/sto/eam/subscription/confirm-investment
+  input_schema: null
+- name: addx_subsequent_redemption_token_info_eam
+  title: Subsequent Redemption Token Info - EAM
+  category: Account Management
+  rest:
+    method: GET
+    path: /client/v1/sto/eam/redemption/tokens-info
+  input_schema: null
+- name: addx_subsequent_redemption_info_eam
+  title: Subsequent Redemption Info - EAM
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/sto/eam/redemption/redemption-info
+  input_schema: null
+- name: addx_subsequent_redemption_fee_eam
+  title: Subsequent Redemption Fee - EAM
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/sto/eam/redemption/redemption-fee
+  input_schema: null
+- name: addx_confirm_subsequent_redemption_eam
+  title: Confirm Subsequent Redemption - EAM
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/sto/eam/redemption/confirm-redemption
+  input_schema: null
+- name: addx_sto_list
+  title: STO List
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/stos
+  input_schema: null
+- name: addx_basic_sto_details
+  title: Basic STO Details
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/sto/basic
+  input_schema: null
+- name: addx_product_details
+  title: Product Details
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/sto/product-details
+  input_schema: null
+- name: addx_wallet_filter_details
+  title: Wallet Filter Details
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/wallet/filter-setting
+  input_schema: null
+- name: addx_pending_transactions
+  title: Pending Transactions
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/wallet/pending-transactions
+  input_schema: null
+- name: addx_historical_transactions
+  title: Historical Transactions
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/wallet/history-transactions
+  input_schema: null
+- name: addx_fiat_balances
+  title: Fiat Balances
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/wallet/fiat-balances
+  input_schema: null
+- name: addx_digital_asset_balances
+  title: Digital Asset Balances
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/wallet/digital-assets/balances
+  input_schema: null
+- name: addx_rewards_balances
+  title: Rewards Balances
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/wallet/credits
+  input_schema: null
+- name: addx_portfolio_filters
+  title: Portfolio Filters
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/portfolio/filter-setting
+  input_schema: null
+- name: addx_portfolio_token_holding
+  title: Portfolio token Holding
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/portfolio/token-holding-details
+  input_schema: null
+- name: addx_portfolio_total_holding
+  title: Portfolio Total Holding
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/portfolio/total-holdings
+  input_schema: null
+- name: addx_portfolio_percentage_holding
+  title: Portfolio Percentage Holding
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/portfolio/total-holdings-percentage
+  input_schema: null
+- name: addx_portfolio_tokens
+  title: Portfolio Tokens
+  category: Account Management
+  rest:
+    method: POST
+    path: /client/v1/portfolio/tokens
+  input_schema: null
+- name: addx_aggregated_order_book
+  title: Aggregated Order-Book
+  category: Market Data
+  rest:
+    method: POST
+    path: /openapi/trading/api/v2/public/markets/:token/aggregated-order-book
+  input_schema: null
+- name: addx_market_depth
+  title: Market Depth
+  category: Market Data
+  rest:
+    method: POST
+    path: /openapi/trading/api/v2/public/markets/:token/depth
+  input_schema: null
+- name: addx_market_state
+  title: Market State
+  category: Market Data
+  rest:
+    method: GET
+    path: /openapi/trading/api/v2/public/markets/:token/state
+  input_schema: null
+- name: addx_token_list
+  title: Token List
+  category: Market Data
+  rest:
+    method: GET
+    path: /openapi/trading/api/v2/public/markets
+  input_schema: null
+- name: addx_token_feed
+  title: Token Feed
+  category: Market Data
+  rest:
+    method: GET
+    path: /openapi/trading/api/v2/public/markets/:token/tickers
+  input_schema: null
+- name: addx_trade_feed
+  title: Trade Feed
+  category: Market Data
+  rest:
+    method: POST
+    path: /openapi/trading/api/v2/public/markets/:token/trades
+  input_schema: null
+- name: addx_user_balance
+  title: User Balance
+  category: Market Data
+  rest:
+    method: GET
+    path: /openapi/trading/api/v2/account/balances
+  input_schema: null
+- name: addx_available_report_types
+  title: Available Report Types
+  category: Reporting
+  rest:
+    method: GET
+    path: /client/v1/document/types
+  input_schema: null
+- name: addx_get_reports
+  title: Get Reports
+  category: Reporting
+  rest:
+    method: GET
+    path: /client/v1/document/my-documents
+  input_schema: null
+- name: addx_download_reports
+  title: Download Reports
+  category: Reporting
+  rest:
+    method: GET
+    path: /client/v1/document/download
+  input_schema: null
+- name: addx_get_bank_accounts
+  title: Get Bank accounts
+  category: Fiat Flow
+  rest:
+    method: GET
+    path: /client/v1/bank/my-banks
+  input_schema: null
+- name: addx_delete_bank_accounts
+  title: Delete Bank accounts
+  category: Fiat Flow
+  rest:
+    method: POST
+    path: /client/v1/bank/delete
+  input_schema: null
+- name: addx_add_bank_account
+  title: Add Bank account
+  category: Fiat Flow
+  rest:
+    method: POST
+    path: /client/v1/bank/add-bank-account
+  input_schema: null
+- name: addx_edit_bank_account
+  title: Edit Bank account
+  category: Fiat Flow
+  rest:
+    method: POST
+    path: /client/v1/bank/update-bank-account
+  input_schema: null
+- name: addx_upload_document
+  title: Upload document
+  category: Fiat Flow
+  rest:
+    method: POST
+    path: /client/v1/account/upload-file
+  input_schema: null
+- name: addx_deposit_fiat
+  title: Deposit Fiat
+  category: Fiat Flow
+  rest:
+    method: GET
+    path: /client/v1/wallet/fiat-deposit
+  input_schema: null
+- name: addx_withdraw_info
+  title: Withdraw Info
+  category: Fiat Flow
+  rest:
+    method: POST
+    path: /client/v1/wallet/fiat-withdraw-info
+  input_schema: null
+- name: addx_withdraw_otp_request
+  title: Withdraw OTP request
+  category: Fiat Flow
+  rest:
+    method: GET
+    path: /client/v1/wallet/fiat-withdraw-mobile-otp
+  input_schema: null
+- name: addx_confirm_withdraw_request
+  title: Confirm Withdraw  request
+  category: Fiat Flow
+  rest:
+    method: GET
+    path: /client/v1/wallet/fiat-withdraw-confirm
+  input_schema: null
+- name: addx_wm_distribute_fiat
+  title: WM - Distribute Fiat
+  category: Fiat Flow
+  rest:
+    method: GET
+    path: /client/v1/wm/distribute
+  input_schema: null
+- name: addx_wm_collect_fiat
+  title: WM - Collect Fiat
+  category: Fiat Flow
+  rest:
+    method: GET
+    path: /client/v1/wm/collect
+  input_schema: null
+- name: addx_get_digital_balance
+  title: Get digital balance
+  category: Digital Assets
+  rest:
+    method: GET
+    path: /client/v1/wallet/digital-assets/balances
+  input_schema: null
+- name: addx_get_deposit_address_details
+  title: Get deposit address details
+  category: Digital Assets
+  rest:
+    method: GET
+    path: /client/v1/wallet/digital-assets/deposit-address
+  input_schema: null
+- name: addx_get_applicable_withdrawal_fee
+  title: Get applicable withdrawal fee
+  category: Digital Assets
+  rest:
+    method: POST
+    path: /client/v1/wallet/digital-assets/withdraw-fee
+  input_schema: null
+- name: addx_generate_email_otp
+  title: Generate email OTP
+  category: Digital Assets
+  rest:
+    method: GET
+    path: /client/v1/wallet/digital-assets/withdraw-email-otp
+  input_schema: null
+- name: addx_generate_mobile_otp
+  title: Generate mobile OTP
+  category: Digital Assets
+  rest:
+    method: GET
+    path: /client/v1/wallet/digital-assets/withdraw-mobile-otp
+  input_schema: null
+- name: addx_request_identity_verification
+  title: Request identity verification
+  category: Digital Assets
+  rest:
+    method: POST
+    path: /client/v1/wallet/digital-assets/verify-identity
+  input_schema: null
+- name: addx_confirm_withdraw_request
+  title: Confirm withdraw request
+  category: Digital Assets
+  rest:
+    method: GET
+    path: /client/v1/wallet/digital-assets/withdraw-confirm
+  input_schema: null
+gaps:
+- Tool input schemas require the request bodies to be modelled; ADDX publishes examples, not schemas.
+- 'A real server could not be reached even if built: the base URL is issued per partner and environment
+  on request.'

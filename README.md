@@ -64,5 +64,20 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-ADDX is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.nasdaqprivatemarket.com/
+ADDX is a Singapore-headquartered digital securities exchange and private-markets investment platform,
+licensed by the Monetary Authority of Singapore as a Capital Markets Services licensee (dealing in capital
+markets products and providing custodial services) and as a Recognised Market Operator. Founded in November
+2017 as iSTOX and operated by ADDX Pte. Ltd. (UEN 202125312H), it tokenises and fractionalises private
+equity, private credit, hedge funds, structured products, fixed income and commercial paper so accredited
+investors can subscribe at roughly USD 10,000 rather than institutional minimums. ADDX Advantage packages
+the same rails for wealth managers, brokers and external asset managers.
+
+This profile is built from ADDX's own public surface. The API artifacts here are read from the publicly
+published **ADDX Open API** reference at <https://api-docs.addx.co/open-api/> — an HTML "Open Api Library"
+documenting roughly 68 HMAC-signed REST operations across Account Management, Market Data, Reporting, Fiat
+Flow and Digital Assets. ADDX publishes no OpenAPI document, and it deliberately does not publish the API
+base URL: the reference states the base URL depends on the environment and is issued on request per use
+case, so the documented paths are not reachable without an ADDX partner relationship.
+
+- <https://addx.co/>
+- <https://api-docs.addx.co/open-api/>

@@ -1,0 +1,113 @@
+generated: '2026-09-07'
+method: searched
+source: https://api-docs.addx.co/open-api/
+name: ADDX Open API error catalog
+api: ADDX Open API
+docs: https://api-docs.addx.co/open-api/
+format: custom
+rfc9457: false
+media_type: application/json
+summary: >-
+  ADDX publishes a short status-code table and then documents failure shapes inline per operation. There is
+  no error-code registry, no problem-type URIs and no stable machine-readable error identifiers — the
+  discriminator a client gets is a numeric code plus a human-readable message string.
+envelope:
+  fields:
+  - name: message
+    type: string
+    description: Human-readable error text. Not stable and not enumerated.
+  - name: code
+    type: integer
+    description: HTTP-like status echoed inside the body (400 observed).
+  - name: success
+    type: boolean
+    description: false on failure.
+  - name: extra
+    type: array
+    required: false
+    description: >-
+      Per-item failures on batch EAM operations, each entry {sid, error} naming the investor SID that
+      failed and why.
+  example_documented: '{"message": "Input token amount that is more than min. amount of 5", "code": 400, "success": false}'
+status_codes:
+- status: 400
+  title: Bad Request
+  meaning: Returns JSON with the error message.
+  source: the reference's Status Code table
+- status: 404
+  title: Access not allowed for user Key/Secret pair
+  meaning: >-
+    On this API a 404 is an authorization outcome as well as a routing one. The docs state resources are
+    bound to a specific account and "Otherwise a 404 will be returned", and the status table describes 404
+    as what a caller sees when the key is inactive/disabled or the called link is not valid.
+  source: the reference's Status Code table and the Interaction with API section
+problem_types:
+- id: below-minimum-amount
+  title: Investment or redemption amount below the minimum
+  status: 400
+  detail_example: Input token amount that is more than min. amount of 5
+  operations: [Confirm Investment, Confirm Subsequent Investment, Confirm Subsequent Redemption Request, Confirm Investment - EAM]
+  remediation: Read the minimum from the matching investment-info / redemption-info call before confirming.
+- id: amount-outside-min-max
+  title: Investment amount not within the offering's min and max
+  status: 400
+  detail_example: if Investment Amount is not within min and max amount, error payload will be received
+  operations: [Investment Fee, Confirm Investment, Subsequent Subscription Investment Fee]
+  remediation: Quote with the fee operation first; it carries the accepted range for the STO.
+- id: insufficient-wallet-balance
+  title: Client wallet has insufficient balance
+  status: 400
+  detail_example: if client wallet has in-sufficient balance, error is received
+  operations: [Confirm Investment, Confirm Subsequent Investment]
+  remediation: Check Balance Info / Fiat Balances for the settlement currency before confirming.
+- id: insufficient-token-holding
+  title: Insufficient token holding for the requested redemption
+  status: 400
+  detail_example: in case of insufficient token following error payload will be returned
+  operations: [Subsequent Redemption Info, Confirm Subsequent Redemption Request]
+  remediation: Read Subsequent Token Info For Redemption for the redeemable balance.
+- id: sto-not-open
+  title: Subscription cannot be placed at this time
+  status: 400
+  detail_example: Returns error if Subscription for STO cant be placed at this time / if STO is closed or complete
+  operations: [Confirm Subsequent Investment, Confirm Subsequent Subscription - EAM, Confirm Investment - EAM]
+  remediation: Check the offering state via STO List / Basic STO Details before subscribing.
+- id: rollover-not-supported
+  title: Rollover is not supported for this STO
+  status: 400
+  detail_example: Error in case rollover is not supported for the sto
+  operations: [Subsequent Investment Info]
+  remediation: Not all offerings support subsequent subscription; treat as a capability check.
+- id: invalid-or-unsupported-currency
+  title: Non-supported or invalid currency passed
+  status: 400
+  detail_example: if Non-Supported / Invalid currency is passed, Returns error
+  operations: [Deposit Fiat, Withdraw Info]
+  remediation: Take currency codes from Wallet Filter Details / Fiat Balances rather than hard-coding them.
+- id: unknown-market-token
+  title: Market token is not correct
+  status: 400
+  detail_example: Returns error message is market token is not correct
+  operations: [Aggregated Order-Book, Market Depth, Market State, Trade Feed, Token Feed]
+  remediation: Take the token symbol from Token List (/openapi/trading/api/v2/public/markets).
+- id: no-transactions-found
+  title: No transactions found
+  status: 200
+  detail_example: '{"message": "No transactions found.", "code": ...}'
+  operations: [Historical Transactions]
+  remediation: >-
+    An empty result is returned as a message envelope rather than an empty array, so clients must handle two
+    response shapes for the same operation.
+- id: per-investor-batch-failure
+  title: Per-investor failure inside a batch EAM instruction
+  status: 400
+  detail_example: '{"extra": [{"sid": "010160703A", "error": "Input amount that is more than min. amount of 10000.0"}]}'
+  operations: [Confirm Investment - EAM, Confirm Subsequent Subscription - EAM]
+  remediation: >-
+    Partial failure is reported per investor SID in extra[]; do not treat the top-level code as
+    all-or-nothing without reading extra[].
+gaps:
+- No stable error codes or problem-type URIs — clients must match on English message text.
+- No 401, 403, 409, 422, 429 or 5xx semantics are documented anywhere in the reference.
+- No documented retry guidance and no Retry-After.
+- 404 conflates "not found", "not yours" and "key disabled", which makes automated remediation ambiguous.

@@ -1,0 +1,75 @@
+generated: '2026-09-07'
+method: searched
+source: https://api-docs.addx.co/open-api/
+name: ADDX Open API lifecycle
+api: ADDX Open API
+docs: https://api-docs.addx.co/open-api/
+summary: >-
+  ADDX path-versions its API (client/v1 and trading/api/v2) and carries exactly one in-document deprecation
+  notice, at field level. It publishes no versioning policy, no deprecation policy, no Sunset/Deprecation
+  header contract, no SLA and no status page that could be found from any ADDX host.
+versioning:
+  style: path
+  current:
+  - surface: platform
+    version: v1
+    prefixes: ['/client/v1/', '/openapi/client/v1/']
+  - surface: trading / exchange
+    version: v2
+    prefix: /openapi/trading/api/v2/
+  policy_published: false
+  policy_url: null
+  breaking_change_notice: not documented
+deprecation:
+  policy_published: false
+  policy_url: null
+  rfc8594_headers: false
+  sunset_header: not documented
+  deprecation_header: not documented
+  deprecated_items:
+  - kind: field
+    item: avg_price
+    operation: Token Feed
+    path: /openapi/trading/api/v2/public/markets/:token/tickers
+    notice: 'Note: "avg_price" field in the response is deprecated and will be removed in next release.'
+    removal_date: null
+    removal_window: 'unspecified — "next release"'
+    source: https://api-docs.addx.co/open-api/
+  note: >-
+    One field-level deprecation notice, stated in prose inside the response documentation, with no date and
+    no machine-readable signal. There is no deprecated operation in the published surface.
+status_page:
+  published: false
+  url: null
+  probed:
+  - url: https://status.addx.co/
+    status: 0
+    note: does not resolve
+  - url: https://addx.statuspage.io/
+    status: 200
+    note: >-
+      Statuspage.io responds on the subdomain but serves a generic Statuspage shell, not an ADDX status
+      page. Treated as absent — a 200 from a vendor's catch-all is not a published status page.
+sla:
+  published: false
+  uptime_target: null
+  note: >-
+    No SLA, uptime commitment or maintenance-window policy is published on the developer surface. The
+    governing documents ADDX does publish are regulatory rulebooks (Platform Rules, Exchange Rules, Trading
+    Rules, Listing Rules, OTC Rules, Best Execution Policy), not service-level commitments to API callers.
+changelog:
+  published: false
+  url: null
+  note: >-
+    The Open API Library page carries no dated changelog, no version history and no last-updated stamp. The
+    only temporal signal in the whole document is the "next release" wording on the avg_price deprecation.
+environments:
+  published: false
+  note: >-
+    "Base URL is dependent on the environment" — ADDX confirms multiple environments exist but names none of
+    them and issues the applicable base URL on request per use case.
+gaps:
+- No versioning or deprecation policy, so a partner has no stated notice period before a breaking change.
+- The one deprecation that is published has no removal date, only "next release".
+- No status page and no incident history for a licensed exchange whose API moves client money.
+- No changelog, so a partner cannot tell whether the reference has changed since they integrated.

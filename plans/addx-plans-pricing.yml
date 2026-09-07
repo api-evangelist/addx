@@ -1,0 +1,61 @@
+generated: '2026-09-07'
+method: searched
+source: https://addx.co/en/faq/
+name: ADDX plans and pricing
+plan_count: 0
+plans: []
+summary: >-
+  ADDX publishes no plans, tiers or subscription pricing, and none for API access in particular. It is a
+  regulated exchange, not a metered SaaS: there is no signup fee and no account fee, and revenue comes from
+  transaction fees on investments and on secondary trading. The ADDX Open API is not sold as a product with
+  a price — it is an access channel offered to onboarded partners (ADDX Advantage wealth managers, brokers
+  and external asset managers), and the ADDX Advantage page states only "Choose between accessing directly
+  through web portal, or API integration with your existing system" with no commercial terms attached.
+pricing_page_published: false
+api_pricing_published: false
+fees_published_as_prose: true
+fees:
+- item: Investor signup / account opening
+  amount: 0
+  currency: null
+  evidence: >-
+    "There are absolutely no fees associated with opening an account with us." (ADDX FAQ)
+  source: https://addx.co/en/faq/
+- item: Primary offering subscription
+  amount: null
+  currency: null
+  note: >-
+    "There will only be an ADDX fee applicable when investing in primary offerings, or when you are trading
+    digital securities on the ADDX exchange." The rate is not published on the public site.
+  source: https://addx.co/en/faq/
+- item: Secondary exchange trading
+  amount: null
+  currency: SGD
+  minimum: 0.01
+  note: >-
+    "The fees on the exchange are chargeable to both the buyer and seller, subject to a minimum of SGD 0.01
+    per trade, depending on the asset class." Percentage rates are not published.
+  source: https://addx.co/en/faq/
+- item: ADDX Open API access
+  amount: null
+  currency: null
+  note: >-
+    No price, minimum, or metering is published for API access. Keys are generated inside the product by an
+    already-onboarded user, and the base URL is issued per use case on request.
+  source: https://api-docs.addx.co/open-api/
+onboarding:
+  self_serve_for_investors: true
+  self_serve_for_api: false
+  note: >-
+    An investor can register at https://client.addx.co/register without sales contact, but API use requires
+    an ADDX-issued base URL for the applicable environment, which the documentation says to request from
+    "the concerned person".
+probes:
+- url: https://addx.co/en/pricing/
+  status: 404
+- url: https://addx.co/en/fees/
+  status: 404
+- url: https://addx.co/en/faq/
+  status: 200
+- url: https://addx.co/en/advantage/get-started/
+  status: 200

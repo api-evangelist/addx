@@ -1,0 +1,62 @@
+generated: '2026-09-07'
+method: searched
+source: https://api-docs.addx.co/open-api/
+name: ADDX Open API authentication
+api: ADDX Open API
+docs: https://api-docs.addx.co/open-api/
+summary: >-
+  ADDX does not use OAuth, OpenID Connect or a plain bearer API key. Every request to the ADDX Open API is
+  signed: the caller holds a Key ID and a secret passphrase generated from the API-Settings panel in their
+  ADDX user profile, and sends an HMAC-SHA256 signature over the concatenation of a UTC epoch timestamp and
+  the HTTP method, Base64 encoded. The provider states that a user may need more than one key/secret pair
+  depending on which requests they make.
+schemes:
+- id: addx-hmac-signature
+  type: http
+  scheme: signature
+  in: header
+  algorithm: HMAC-SHA256
+  encoding: base64
+  description: >-
+    Request signature. The documentation's own Postman sample builds the signed string as
+    [timestamp, method].join("") and computes CryptoJS.HmacSHA256(signature, secret_key).toString(CryptoJS.enc.Base64).
+  headers:
+  - name: X-Signature
+    value: Signature generated using open-SSL HMAC
+    required: true
+  - name: X-UserId
+    value: Key ID of the user
+    required: true
+  - name: X-TimeStamp
+    value: UTC epoch timestamp in seconds
+    required: true
+  applies_to: all documented operations
+credentials:
+  issuance: self-service, inside the authenticated product
+  where: API-Settings in the User Profile section of the ADDX platform
+  kinds:
+  - Key ID (public identifier, sent as X-UserId)
+  - secret passphrase (never transmitted; used as the HMAC key)
+  multiple_keys: >-
+    The docs state that for security reasons a user may have to generate more than one key/secret pair
+    depending on the API request.
+  rotation_policy_published: false
+  expiry_published: false
+oauth2: false
+openid_connect: false
+mutual_tls: false
+api_key_header: false
+authorization:
+  model: account-scoped
+  note: >-
+    "Most resources are bound to a specific account belonging to the authenticated user. As the user can
+    control which accounts are accessible accounts, you should make sure you have the access to right
+    account. Otherwise a 404 will be returned." A 404 is therefore an authorization signal on this API, not
+    only a routing one.
+  scopes_published: false
+  scope_surface: none — no OAuth scopes or named permissions are documented
+gaps:
+- No published token lifetime, replay window, or clock-skew tolerance for X-TimeStamp.
+- The docs do not state whether the signed string includes the request path or body, only timestamp + method.
+- No key rotation or revocation procedure is documented.
+- No sandbox or test credentials are published; environments are issued per use case on request.

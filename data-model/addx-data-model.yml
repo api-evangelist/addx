@@ -1,0 +1,154 @@
+generated: '2026-09-07'
+method: derived
+source: https://api-docs.addx.co/open-api/
+name: ADDX Open API data model
+api: ADDX Open API
+summary: >-
+  Entity graph derived from the request bodies and documented JSON response examples in the ADDX Open API
+  reference. There is no OpenAPI document and no components/schemas section to read, so this model is
+  inferred from the example payloads the provider publishes: every entity and field below appears verbatim
+  in at least one documented example. Types are recorded only where an example makes them unambiguous.
+  Nothing here is invented — where the reference does not say, the field is omitted rather than guessed.
+identifiers:
+  sid:
+    description: >-
+      Investor identifier, the single most load-bearing key in the API — it appears in 50 documented
+      payloads. EAM operations take it to act on behalf of a managed investor and report per-investor
+      failures against it in extra[].
+    example_shapes: ['SID0001', 'ISID001', '010160703A']
+    note: The reference shows more than one SID format; no format is specified.
+  tokenCode:
+    description: Digital-security ticker symbol, used both as a portfolio key and as the exchange market key.
+    example_shapes: ['ATAYZY', 'SUSHI', 'SUSHI8']
+  stoId:
+    description: Numeric identifier of a security-token offering.
+    example_shapes: [2334]
+  currencyCode:
+    description: ISO 4217 fiat code.
+    observed_values: [SGD, USD, EUR, GBP, HKD, JPY, INR]
+  requestId:
+    description: Identifier returned on submitted instructions (subscription and redemption confirmations).
+entities:
+- name: Account
+  operations: [Account Info]
+  fields: [email, firstName, middleName, lastName, companyName, role, registerState, gst]
+  note: gst is documented as the applicable GST rate, a float — the account carries a tax attribute.
+- name: Investor
+  operations: [Investor Details, Portfolio Details, Transaction Details, Wallet Details]
+  key: sid
+  fields: [id, sid, name, email]
+  note: >-
+    The set of investors an authenticated EAM user may act on. Retrieved with a statusFilter such as
+    completed-accounts.
+- name: Balance
+  operations: [Balance Info, Fiat Balances, Digital Asset Balances, Rewards Balances, User Balance]
+  fields: [code, totalBalance, totalLocked, walletBalance, available, earmarked, currency]
+  note: >-
+    One shape spans fiat, digital-security tokens and rewards credits; earmarked/totalLocked express funds
+    committed to a pending instruction.
+- name: STO
+  description: Security token offering — the primary-market instrument.
+  operations: [STO List, Basic STO Details, Product Details, Investment Info, Investment Fee]
+  key: stoId
+  fields: [stoId, tokenCode, tokenName, title, description, logoUrl, phase, state, securityType, minInvestment, maxInvestment, incremental, navPerToken, totalNav, totalTokenSupply, recordDate, isInception, isConsolidationToken]
+  observed_enums:
+    securityType: [Debt]
+  note: >-
+    incremental is the subscription step size; minInvestment/maxInvestment bound it. phase and state carry
+    the offering lifecycle that the sto-not-open error class enforces.
+- name: Subscription
+  description: A primary or subsequent investment instruction against an STO.
+  operations: [Investment Info, Investment Fee, Confirm Investment, Subsequent Investment Info, Confirm Subsequent Investment, and their EAM equivalents]
+  fields: [stoId, amount, currencyCode, previouslySubscribedAmount, tokenQuantity, cost, totalCost, fee, discount, addxFeeAmount, gstPercent, finalStoFee, totalPayable, requestId, investmentInvestors, investors]
+  note: >-
+    The fee quote is a first-class documented object — addxFeeAmount, gstPercent, discount, finalStoFee and
+    totalPayable are returned before the caller confirms.
+- name: Redemption
+  description: An instruction to redeem tokens back to fiat.
+  operations: [Subsequent Token Info For Redemption, Subsequent Redemption Info, Get Subsequent Redemption Fee, Confirm Subsequent Redemption Request, and their EAM equivalents]
+  fields: [stoId, tokenCode, amount, estimatedAmount, fee, requestId]
+- name: PortfolioHolding
+  operations: [Portfolio token Holding, Portfolio Total Holding, Portfolio Percentage Holding, Portfolio Tokens, Portfolio Details]
+  fields: [tokenName, tokenCode, tokenQuantity, navPerToken, cost, totalCost, profitLoss]
+- name: Transaction
+  operations: [Pending Transactions, Historical Transactions, Transaction Details]
+  fields: [activity, description, date, createdAt, updatedAt, status, amount, currencyCode, tokenCode, initiatedByName]
+  observed_enums:
+    activity: [Custody, Currency Conversions]
+  paginated: true
+- name: BankAccount
+  operations: [Get Bank accounts, Add Bank account, Edit Bank account, Delete Bank accounts]
+  fields: [id, bankName, currencyCode]
+- name: Document
+  description: Investor-facing statements and reports.
+  operations: [Available Report Types, Get Reports, Download Reports, Upload document]
+  fields: [docName, docType, date]
+  observed_types: [AnnouncementDocumentType]
+- name: Market
+  description: Exchange order book and ticker for a listed token.
+  operations: [Aggregated Order-Book, Market Depth, Market State, Token List, Token Feed, Trade Feed]
+  key: tokenCode
+  fields: [at, timestamp, state, limit]
+  note: >-
+    Lives on the separately versioned /openapi/trading/api/v2/ surface. avg_price on the ticker is
+    documented as deprecated (see lifecycle/addx-lifecycle.yml).
+- name: DigitalAssetWallet
+  operations: [Get digital balance, Get deposit address details, Get applicable withdrawal fee, Confirm withdraw request]
+  fields: [tokenCode, available, fee]
+  observed_values: [ETH, SUSHI]
+- name: Pagination
+  operations: [Historical Transactions, Pending Transactions]
+  fields: [page, pageCount, nextPage, currentPage, __typename]
+  note: __typename PaginationType is a GraphQL type name surfacing in the REST envelope.
+relationships:
+- from: Account
+  to: Investor
+  type: has_many
+  via: sid
+  note: An EAM account has access to many investors; Investor Details enumerates them.
+- from: Investor
+  to: PortfolioHolding
+  type: has_many
+  via: sid
+- from: Investor
+  to: Transaction
+  type: has_many
+  via: sid
+- from: Investor
+  to: BankAccount
+  type: has_many
+  via: sid
+- from: PortfolioHolding
+  to: STO
+  type: belongs_to
+  via: tokenCode
+- from: Subscription
+  to: STO
+  type: belongs_to
+  via: stoId
+- from: Redemption
+  to: STO
+  type: belongs_to
+  via: stoId
+- from: Subscription
+  to: Investor
+  type: belongs_to
+  via: sid
+- from: Market
+  to: STO
+  type: belongs_to
+  via: tokenCode
+  note: The exchange market key and the offering's token code are the same symbol.
+- from: Transaction
+  to: STO
+  type: belongs_to
+  via: tokenCode
+  optional: true
+- from: Balance
+  to: Account
+  type: belongs_to
+  via: implicit — bound to the authenticated user's account
+gaps:
+- No schema document, so field types and required-ness are inferred from single examples.
+- No documented enum for phase, state, registerState, role, transactionType or docType.
+- sid appears in at least three different textual formats across the examples with no stated grammar.
