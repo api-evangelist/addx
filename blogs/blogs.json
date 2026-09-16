@@ -1,0 +1,14 @@
+{
+  "repo": "addx",
+  "feeds": [
+    {
+      "source": "https://addx.co/en/contact-us/",
+      "feed_url": "https://addx.co/en/contact-us/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-09-13T13:00:00Z"
+}
