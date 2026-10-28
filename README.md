@@ -64,20 +64,110 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-ADDX is a Singapore-headquartered digital securities exchange and private-markets investment platform,
-licensed by the Monetary Authority of Singapore as a Capital Markets Services licensee (dealing in capital
-markets products and providing custodial services) and as a Recognised Market Operator. Founded in November
-2017 as iSTOX and operated by ADDX Pte. Ltd. (UEN 202125312H), it tokenises and fractionalises private
-equity, private credit, hedge funds, structured products, fixed income and commercial paper so accredited
-investors can subscribe at roughly USD 10,000 rather than institutional minimums. ADDX Advantage packages
-the same rails for wealth managers, brokers and external asset managers.
+ADDX is a Singapore-headquartered digital securities exchange and private-markets investment platform, licensed by the Monetary Authority of Singapore for the issuance, custody and secondary trading of digital securities. Founded in 2017 as iSTOX, it tokenises and fractionalises private equity, private credit, hedge funds, structured products, fixed income and commercial paper so accredited investors can subscribe at roughly USD 10,000 rather than institutional minimums. Alongside the consumer web and mobile app, ADDX Advantage packages the same rails for wealth managers, brokers and external asset managers (EAMs), and the publicly documented ADDX Open API — an HMAC-signed REST surface of about 68 operations covering account and investor information, STO subscription and redemption, wallet, fiat and digital-asset flows, exchange order-book market data and investor reporting — lets those partners drive the platform from their own systems.
 
-This profile is built from ADDX's own public surface. The API artifacts here are read from the publicly
-published **ADDX Open API** reference at <https://api-docs.addx.co/open-api/> — an HTML "Open Api Library"
-documenting roughly 68 HMAC-signed REST operations across Account Management, Market Data, Reporting, Fiat
-Flow and Digital Assets. ADDX publishes no OpenAPI document, and it deliberately does not publish the API
-base URL: the reference states the base URL depends on the environment and is issued on request per use
-case, so the documented paths are not reachable without an ADDX partner relationship.
+**Areas:** Digital Securities Exchange · Private Markets · Tokenization · Alternative Investments · Wealth Management · Capital Markets · Fintech · Digital Assets · Investment Platform · Singapore
 
-- <https://addx.co/>
-- <https://api-docs.addx.co/open-api/>
+## ADDX on APIs.io
+
+Everything profiled for ADDX is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/addx/](https://apis.io/providers/addx/)** — or go straight to one of the APIs or properties below.
+
+### APIs (1)
+
+- [ADDX Open API](https://apis.io/apis/addx/addx-open-api/) — Publicly documented REST API that connects an external system to the ADDX platform. Roughly 68 operations across five documented groups — Account Management…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [ADDX MCP server](https://apis.io/servers/addx/addx-mcp-server/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Addx Authentication](https://apis.io/security/addx/addx-authentication/)
+- [Addx Domain Security](https://apis.io/security/addx/addx-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Addx Plans Pricing](https://apis.io/plans/addx/addx-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Addx Rate Limits](https://apis.io/rate-limits/addx/addx-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://addx.co/)
+- [Documentation](https://addx.co/en/how-addx-works/)
+- [Getting started](https://addx.co/en/get-started/)
+- [API reference](https://api-docs.addx.co/open-api/)
+- [Sign up](https://client.addx.co/register)
+- [Support](https://addx.co/en/contact-us/)
+- [Blog](https://addx.co/insights/)
+- [Terms of service](https://documents.addx.co/ADDX_Platform_Rules.pdf)
+- [Privacy policy](https://addx.co/en/privacy-policy/)
+
+## API Evangelist rating
+
+**Kin Score 29.3** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 64.3 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 57.1 |
+| Access clarity | 35.5 |
+
+**Agent readiness 10.8** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 29.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/addx/](https://apis.io/providers/addx/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for ADDX: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/addx/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
